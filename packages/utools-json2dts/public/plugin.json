@@ -1,0 +1,10 @@
+{
+	"main": "./index.html",
+	"logo": "./logo.png",
+	"features": [
+		{
+		  "code": "json2ts",
+			"cmds":["dts", "json2ts", "json2dts", "2dts", "2ts"]
+		}
+	]
+}

@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  align-items: center;
+}
+
+.result {
+  width: 100%;
+  color: #fff;
+  font-size: 16px;
+  background-color: #1e1e1e;
+}
+
+.panel {
+  height: 100%;
+  width: 50%;
+  position: relative;
+}
+.monaco-placeholder {
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.copyBtn {
+  position: absolute;
+  cursor: pointer;
+  border: 0;
+  right: 0;
+  background-color: #3d4d56;
+  color: #fff;
+  top: 0;
+  z-index: 9;
+  height: 40px;
+  border-radius: 4px;
+  padding: 0 8px;
+}
+
+html,body,#root,.App {
+  height: 100%;
+}
