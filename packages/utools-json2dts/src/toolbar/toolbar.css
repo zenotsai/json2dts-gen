@@ -1,0 +1,27 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background-color: rgb(30, 30, 30);
+}
+.toolbar-item {
+  margin-left: 20px;
+}
+.icon {
+  color: #18b6ea;
+  font-size: 30px;
+ 
+}
+
+.btn {
+  color: #fff;
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+ 
+}
+
+.btn:hover {
+  color: #29b7e8
+}

@@ -20,13 +20,7 @@
   width: 50%;
   position: relative;
 }
-.monaco-placeholder {
-  position: absolute;
-  top: 0px;
-  left: 70px;
-  font-size: 16px;
-  color: #fff;
-}
+
 
 .copyBtn {
   position: absolute;
@@ -44,4 +38,19 @@
 
 html,body,#root,.App {
   height: 100%;
+}
+
+
+
+
+.formatIcon::after {
+  content: '\e60f';
+  font-family: "iconfont"; 
+}
+.clearIcon::after {
+  content: '\e62f';
+    font-family: "iconfont";
+    font-size: 21px;
+    position: relative;
+    top: -4px;
 }

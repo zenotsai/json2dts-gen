@@ -2,7 +2,6 @@ import npmlog from 'npmlog'
 import PkgJson from '../package.json';
 
 const envs = ['verbose', 'info', 'error', 'warn'];
-type a = typeof envs;
 
 const envLogLevel = process.env.LOG_LEVEL as string
 const logLevel =

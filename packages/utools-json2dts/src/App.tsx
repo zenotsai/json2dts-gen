@@ -1,51 +1,41 @@
 import './App.css';
-import type { editor } from 'monaco-editor'
-import MonacoEditor from 'react-monaco-editor';
-import generateDeclarationFile from 'json2dts-gen';
-import { useMemo, useState, useRef }  from 'react'
+import generateDeclarationFile, { parseJson } from 'json2dts-gen';
+import { useMemo, useState }  from 'react'
 import ClipboardButton from './ClipboardButton';
 import useDebounceFn  from './useDebounceFn';
-// import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
-// import 'monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution';
+import Toolbar from './toolbar'
+import Editor from './edtor'
+import useUpdateEffect  from './useUpdateEffect';
+import PrefixSwitch from './prefix-switch';
 
-const PLACEHOLDER_SELECTOR = ".monaco-placeholder";
 
-function showPlaceholder(value: string) {
-  if (value === "") {
-    const dom: HTMLDivElement | null = document.querySelector(PLACEHOLDER_SELECTOR);
-    if (dom) {
-      dom.style.display = "initial";
-    }
-  
+const LOCAL_KEY_INTERFACE_PREFIX = "001";
+const LOCAL_KEY_SEPARATE_PREFIX = "002";
+
+
+function getDefaultValue (key: string, defaultValue: boolean) {
+  const value = window.localStorage.getItem(key);
+  if (!value) {
+    return defaultValue;
   }
+  return value === '1';
 }
-
-function hidePlaceholder() {
-  const dom: HTMLDivElement | null = document.querySelector(PLACEHOLDER_SELECTOR);
-  if (dom) {
-    dom.style.display = "none";
-  }
-}
-
-function parseJson (value: string) {
-  try {
-    return JSON.parse(value.trim());
-     
-  } catch (e: any) {
-    // eslint-disable-next-line
-    return new Function(`return ${ value }`)();
-  }
-}
-
 function App() {
   const [result, setResult] = useState<string[]>([]);
-  const refs = useRef<any>();
+  const [json, setJson] = useState<string>();
+  const [option, setOption] = useState({
+    interfacePrefix: getDefaultValue(LOCAL_KEY_INTERFACE_PREFIX, false),
+    objectSeparate: getDefaultValue(LOCAL_KEY_SEPARATE_PREFIX, true)
+  });
 
   const { run: onChange } = useDebounceFn(
     (value: string) => {
       try {
-        console.log('value', value)
-        const res = generateDeclarationFile(parseJson(value)); 
+        setJson(value);
+        const res = generateDeclarationFile(parseJson(value), {
+          ...option,
+          interfacePrefix: option.interfacePrefix ? 'I' : ''
+        }); 
         setResult(res || [])
       } catch (e: any) {
         setResult([e.message])
@@ -55,16 +45,14 @@ function App() {
       wait: 500,
     },
   );
-  const editorDidMount = (instance: editor.ICodeEditor) => {
-    
-    instance.onDidBlurEditorWidget(() => {
-      showPlaceholder(instance.getValue());
-    });
 
-    instance.onDidFocusEditorWidget(() => {
-      hidePlaceholder();
-    });
-  }
+  useUpdateEffect(() => {
+    if (json) {
+      onChange(json)
+    }
+
+  }, [option])
+
 
  
   const resultMsg = useMemo(() => {
@@ -73,36 +61,68 @@ function App() {
   return (
     <div className="App">
       <div className='panel'>
-        <MonacoEditor
-          ref={refs}
-          language="javascript"
-          options={{
-            minimap: {
-              enabled: false
-            },
-            automaticLayout: true,
-            fontSize: 16
-          }}
-          editorDidMount={editorDidMount}
+        <Toolbar options={[
+          {
+            label: '格式化',
+            key: 'format',
+            className: 'formatIcon',
+            onClick: () => {
+              setJson(JSON.stringify(JSON.parse(json!), null, 2));
+            }
+          },
+          {
+            label: '清除',
+            className: 'clearIcon',
+            key: 'clear',
+            onClick: () => {
+              setJson('');
+            }
+          }
+        ]}/>
+        <Editor
+          placeholder='需要转换的代码写这里~'
+          value={json}
           onChange={onChange}
-          theme="vs-dark"
         />
-        <div className="monaco-placeholder">代码写这里~ </div>
+       
       </div>
       <div className='panel'>
       <ClipboardButton text={resultMsg} className="copyBtn"/>
-      <MonacoEditor
+      <Toolbar
+        options={[
+          {
+            label: '格式化时 interface 添加一个 "I" 前缀',
+            key: 'autoPrefix',
+            component: <PrefixSwitch localKey={LOCAL_KEY_INTERFACE_PREFIX} active={option.interfacePrefix} onChange={(active) => {
+              setOption({
+                ...option,
+                interfacePrefix: active
+              })
+            }}>
+               &#xe628;
+            </PrefixSwitch>
+          },
+          {
+            label: 'Object 单独生成一个 interface',
+            key: 'separate',
+            component: <PrefixSwitch localKey={LOCAL_KEY_SEPARATE_PREFIX} active={option.objectSeparate} onChange={(active) => {
+              setOption({
+                ...option,
+                objectSeparate: active
+              })
+            }}>
+             &#xe622;
+            </PrefixSwitch>
+          }
+        ]}
+      />
+      <Editor
           value={resultMsg}
           language="typescript"
           options={{
-            automaticLayout: true,
-            minimap: {
-              enabled: false
-            },
             readOnly: true,
-            fontSize: 16
           }}
-          theme="vs-dark"
+          onChange={onChange}
         />
       </div>
      

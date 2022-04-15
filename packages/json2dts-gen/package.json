@@ -1,10 +1,14 @@
 {
   "name": "json2dts-gen",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "generate dts from json",
   "main": "./dist/index.js",
   "license": "MIT",
-  "keywords": ["json2ts", "js2ts", "dts"],
+  "keywords": [
+    "json2ts",
+    "js2ts",
+    "dts"
+  ],
   "bugs": {
     "url": "https://github.com/zenotsai/json2dts-gen/issues"
   },
@@ -18,6 +22,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "tsup",
+    "test": "jest",
     "dev": "tsup --watch src"
   },
   "author": "zeno",
@@ -25,14 +30,17 @@
     "js2dts": "./dist/bin.js"
   },
   "dependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
     "camelcase": "^6.3.0",
     "commander": "^9.1.0",
     "dts-dom": "^3.6.0",
+    "jest": "^27.5.1",
     "npmlog": "^6.0.1"
   },
   "devDependencies": {
-    "@types/npmlog": "^4.1.4",
     "@types/commander": "^2.12.2",
+    "@types/npmlog": "^4.1.4",
     "tsup": "^5.12.1",
     "typescript": "^4.6.2"
   }
