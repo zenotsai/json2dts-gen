@@ -19,7 +19,7 @@ Generate typeScript type definitions from JSON
 | :-----| ----: | :----: |
 | -c | json content | -- |
 | -f |  file path | -- |
-| -sep |  Object types are defined individually | -- |
+| -sep |  Object types are defined individually | true |
 | -prefix |  ixinterface prefix | -- |
 
 
@@ -41,4 +41,4 @@ import generateDeclarationFile, { parseJson } from 'json2dts-gen';
 
 ## Test
 
-```npm run test
+```npm run test ```
