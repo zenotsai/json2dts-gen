@@ -80,7 +80,6 @@ function App() {
           }
         ]}/>
         <Editor
-          placeholder='需要转换的代码写这里~'
           value={json}
           onChange={onChange}
         />

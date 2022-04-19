@@ -1,5 +1,5 @@
-import type { ObjectType, InterfaceDeclaration, ArrayTypeReference, PrimitiveType } from 'dts-dom';
-import * as dtsDom from 'dts-dom';
+import type { ObjectType, InterfaceDeclaration, ArrayTypeReference, PrimitiveType } from './dts-dom';
+import * as dtsDom from './dts-dom';
 import camelcase from 'camelcase';
 
 
@@ -7,7 +7,6 @@ export type IOptions = {
   objectSeparate?: boolean;
   interfacePrefix?: string;
 }
-
 
 function looseParseJson(value: string): object {
   let result
@@ -45,7 +44,7 @@ function generateDeclarationFile(value: object, options: IOptions = Object.creat
   const { objectSeparate = true, interfacePrefix = '' } = options;
   const intf = dtsDom.create.interface(generateInterfaceName("CustomType"));
   const standaloneType: InterfaceDeclaration[] = [];
-
+  const result: string[] = [];
   function generateInterfaceName(name: string) {
     return interfacePrefix + name;
   }
@@ -92,19 +91,29 @@ function generateDeclarationFile(value: object, options: IOptions = Object.creat
     }
   }
 
-
-  if (typeof value === "object") {
+  function generateObjectDeclaration(value: object) {
     const obj = getTypeOfValue(value) as InterfaceDeclaration;
     obj.members.forEach((m) => intf.members.push(m));
-    const result = [];
     standaloneType.forEach((e) =>
       result.push(handlerResult(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module })))
     );
     result.push(handlerResult(dtsDom.emit(intf, { rootFlags: dtsDom.ContextFlags.Module })))
-    return result;
+    return obj;
   }
-  return [];
+
+  if (Array.isArray(value) && value.length > 0) {
+    const obj = getTypeOfValue(value[0]) as InterfaceDeclaration;
+    standaloneType.forEach((e) =>
+      result.push(handlerResult(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module })))
+    );
+    const customType = dtsDom.create.type(generateInterfaceName("CustomType"), dtsDom.create.array(obj));
+    result.push(handlerResult(dtsDom.emit(customType, { rootFlags: dtsDom.ContextFlags.Module })))
+  } else {
+    generateObjectDeclaration(value);
+  }
+  return result;
 }
+
 
 
 function handlerResult(res: string) {

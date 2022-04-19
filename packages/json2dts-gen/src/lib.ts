@@ -7,8 +7,12 @@ import path from 'path';
 import generateDeclarationFile, { parseJson } from './'
 const program = new Command();
 
+
+
 program
   .option('-c, --content <content>', 'json content')
+  .option('-sep, --objectSeparate', 'Object types are defined individually', true)
+  .option('-prefix, --prefix <prefix>', 'interface prefix')
   .option('-f, --file <file>', 'json file')
   .version(PkgJson.version)
   .parse();
@@ -29,9 +33,11 @@ function isExistSync(filePath: string) {
 const options = program.opts<{
   content: string;
   file: string;
+  objectSeparate: boolean;
+  prefix: string;
 }>();
 (() => {
-  const { content, file } = options;
+  const { content, file, objectSeparate, prefix } = options;
   if (!content && !file) {
     log.warn('Missing required parameter --content or --file')
     return;
@@ -41,6 +47,7 @@ const options = program.opts<{
   if (content) {
     targetObj = parseJson(content);
   } else {
+    
     const filePath = path.resolve(process.cwd(), file);
     if (!isExistSync(filePath)) {
       log.warn(`file does not exist：${filePath}`)
@@ -49,5 +56,8 @@ const options = program.opts<{
     targetObj = parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }));
   }
 
-  console.log(generateDeclarationFile(targetObj).join(''))
+  console.log(generateDeclarationFile(targetObj, {
+    objectSeparate,
+    interfacePrefix: prefix
+  }).join(''))
 })()

@@ -1,5 +1,4 @@
 import { parseJson } from "../dist/index.js";
-
 describe("parseLooseJson", () => {
   it("Nested Object", () => {
     expect(
@@ -18,7 +17,15 @@ describe("parseLooseJson", () => {
       },
     });
   });
-
+  it("Array", () => {
+    expect(
+      parseJson(`
+       [
+         "aaa"
+       ]
+      `)
+    ).toEqual(["aaa"]);
+  });
   it("Object", () => {
     expect(
       parseJson(`
