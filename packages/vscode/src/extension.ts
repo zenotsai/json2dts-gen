@@ -67,7 +67,6 @@ class Json2DtsWebViewPanel {
 			const files = fs.readdirSync(resolve(this._extensionUri.path, 'build/static/js')).map((i) => {
 				return resolve(vscode.Uri.joinPath(this._extensionUri, 'build/static/js').path, i);
 			});
-			console.log('this._extensionUri, ', this._extensionUri)
 			const publicPath = `https://file+.vscode-resource.vscode-cdn.net${vscode.Uri.joinPath(this._extensionUri, 'build').path}`;
 			for (let i = 0; i < files.length; i++) {
 				let bundle = fs.readFileSync(files[i], 'utf-8');
