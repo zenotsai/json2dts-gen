@@ -8,17 +8,38 @@ Generate typeScript type definitions from JSON
 *  Loose json specification with automatic formatting error repair
 *  Provides vscode and utools plugins, cli
 
-# Installation
-```npm i json2dts-gen```
+
+# vscode
+search for **JSON2DTS** install
+
+![alt](https://github.com/zenotsai/image-hosting/blob/master/frontend/json2dts.gif?raw=true)
 
 
-# Usage
 
-## cli
+# Cli
 
-```js2dts -f ./package.json ```
- 
-### params
+
+
+
+## Usage
+
+```js
+// install
+npm i json2dts-gen
+
+// cli
+js2dts -f ./package.json 
+
+// or
+
+import generateDeclarationFile, { parseJson } from 'json2dts-gen';
+ const res = generateDeclarationFile(parseJson(value), {
+          objectSeparate: true
+          interfacePrefix: 'I' 
+        }); 
+```
+
+## params
 
 | param | describe | default |
 | :-----| ----: | :----: |
@@ -28,19 +49,13 @@ Generate typeScript type definitions from JSON
 | -prefix |  ixinterface prefix | -- |
 
 
-## code
-
-```ts
-import generateDeclarationFile, { parseJson } from 'json2dts-gen';
- const res = generateDeclarationFile(parseJson(value), {
-          objectSeparate: true
-          interfacePrefix: 'I' 
-        }); 
-```
 
 
 
-为了方便使用，开发了 utools 插件，可在插件中搜索 Json2Ts 安装
+
+
+# UTools
+search for **Json2Ts** install
 
 ![image](https://raw.githubusercontent.com/zenotsai/image-hosting/master/frontend/截屏2022-04-19-下午2.3wl5x8b292a0.webp)
 
