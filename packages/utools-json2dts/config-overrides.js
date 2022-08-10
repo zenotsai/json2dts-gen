@@ -11,7 +11,7 @@ module.exports = {
     if (env !== "production") {
       return config;
     }
-    config.output.publicPath = "./";
+    config.output.publicPath = process.env.RUNTIME === 'VSCODE' ? "https://file+.vscode-resource.vscode-cdn.net/" : './';
     return config;
   },
   devServer: function (configFunction) {

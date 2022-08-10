@@ -1,6 +1,6 @@
 {
   "name": "json2dts-gen",
-  "version": "1.1.2",
+  "version": "1.1.6",
   "description": "generate dts from json",
   "main": "./dist/index.js",
   "license": "MIT",
@@ -36,6 +36,7 @@
     "commander": "^9.1.0",
     "dts-dom": "^3.6.0",
     "jest": "^27.5.1",
+    "json-fixer-browser": "1.6.14",
     "npmlog": "^6.0.1"
   },
   "devDependencies": {

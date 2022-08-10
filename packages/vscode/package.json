@@ -1,0 +1,71 @@
+{
+  "name": "JSON2dts",
+  "displayName": "JSON2dts",
+  "description": "JSON to typescript",
+  "version": "0.0.3",
+  "bugs": {
+    "url": "https://github.com/zenotsai/json2dts-gen/issues"
+  },
+  "keywords": [
+    "json2ts",
+    "vscode",
+    "json",
+    "plugin",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenotsai/json2dts-gen.git"
+  },
+  "icon": "images/logo.png",
+  "publisher": "JSON2dts",
+  "engines": {
+    "vscode": "^1.67.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "private": true,
+  "activationEvents": [
+    "onCommand:json2dts.open"
+  ],
+  "main": "./out/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "json2dts.open",
+        "title": "2dts",
+        "category": "Open JSON2TS panel"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile ",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/vscode": "1.67.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.20.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.7.4"
+  }
+}

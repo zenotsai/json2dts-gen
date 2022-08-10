@@ -1,5 +1,7 @@
 import type { ObjectType, InterfaceDeclaration, ArrayTypeReference, PrimitiveType } from './dts-dom';
 import * as dtsDom from './dts-dom';
+// @ts-ignore
+import jsonFixerBrowser from 'json-fixer-browser';
 import camelcase from 'camelcase';
 
 
@@ -8,24 +10,51 @@ export type IOptions = {
   interfacePrefix?: string;
 }
 
+function jsonFixer(value: string) {
+  try {
+    const { data } = jsonFixerBrowser(value);
+    return data;
+  } catch (e) {
+    console.error(e)
+  }
+  return undefined
+}
+
+
+/**
+ * TODO: 在 json-fixer 中拓展
+ * @param value 
+ * @returns 
+ */
+function jsonFixerObject(value: string) {
+  if (!/^{.+}$/.test(value)) {
+    try {
+      const parts = value.split(/\n/).filter(item => Boolean(item.trim())).map((item) => {
+        const res = item.trim();
+        if (res.endsWith(',') || res.endsWith('{')) {
+          return res;
+        }
+        return res + ','
+      })
+      const newValue = `{${parts.join('')}}`
+      return new Function(`return ${newValue}`)();
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  return undefined
+}
 function looseParseJson(value: string): object {
-  let result
+  let result;
+
   try {
     result = new Function(`return ${value}`)();
   } catch (e) {
+    result = jsonFixer(value);
   }
-  if (!result && !/^{.+}$/.test(value)) {
-    const parts = value.split(/\n/).filter(item => Boolean(item.trim())).map((item) => {
-      const res = item.trim();
-      if (res.endsWith(',') || res.endsWith('{')) {
-        return res;
-      }
-      return res + ','
-    })
-    const newValue = `{${parts.join('')}}`
-    return new Function(`return ${newValue}`)();
+  if (!result) {
+    result = jsonFixerObject(value)
   }
-
   return result;
 }
 

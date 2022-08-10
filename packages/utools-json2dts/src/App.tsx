@@ -67,7 +67,7 @@ function App() {
             key: 'format',
             className: 'formatIcon',
             onClick: () => {
-              setJson(JSON.stringify(JSON.parse(json!), null, 2));
+              setJson(JSON.stringify(parseJson(json!), null, 2));
             }
           },
           {

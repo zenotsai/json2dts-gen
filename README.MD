@@ -3,6 +3,11 @@ Generate typeScript type definitions from JSON
 
 
 
+# Feature
+*  JSON to typescript
+*  Loose json specification with automatic formatting error repair
+*  Provides vscode and utools plugins, cli
+
 # Installation
 ```npm i json2dts-gen```
 
