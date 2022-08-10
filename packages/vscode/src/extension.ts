@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { resolve } from 'pathe'
 
 
 function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
@@ -63,9 +64,10 @@ class Json2DtsWebViewPanel {
 
 	private __handlerPublicPath(webview: vscode.Webview) {
 		try {
-			const files = fs.readdirSync(vscode.Uri.joinPath(this._extensionUri, 'build/static/js').path).map((i) => {
-				return path.resolve(vscode.Uri.joinPath(this._extensionUri, 'build/static/js').path, i);
+			const files = fs.readdirSync(resolve(this._extensionUri.path, 'build/static/js')).map((i) => {
+				return resolve(vscode.Uri.joinPath(this._extensionUri, 'build/static/js').path, i);
 			});
+			console.log('this._extensionUri, ', this._extensionUri)
 			const publicPath = `https://file+.vscode-resource.vscode-cdn.net${vscode.Uri.joinPath(this._extensionUri, 'build').path}`;
 			for (let i = 0; i < files.length; i++) {
 				let bundle = fs.readFileSync(files[i], 'utf-8');
@@ -82,8 +84,8 @@ class Json2DtsWebViewPanel {
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
 		this.__handlerPublicPath(webview);
-		const jsonPath = vscode.Uri.joinPath(this._extensionUri, 'build', 'asset-manifest.json');
-		const obj = JSON.parse(fs.readFileSync(jsonPath.path).toString());
+		const jsonPath = resolve(this._extensionUri.path, 'build', 'asset-manifest.json');
+		const obj = JSON.parse(fs.readFileSync(jsonPath).toString());
 		const mainJSUri = this._getAssetsUri(webview, obj.entrypoints[1]);
 		const mainCSSUri = this._getAssetsUri(webview, obj.entrypoints[0]);
 

@@ -11,7 +11,7 @@ Generate TypeScript type definitions from JSON
 # Usage
 
 Mac: **command+shift+p**
-Windows: **Ctrl + Shift + O**
+Windows: **Ctrl + Shift + P**
 
 Use the **2dts** command to quickly open the panel
 

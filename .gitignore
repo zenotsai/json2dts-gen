@@ -7,7 +7,7 @@ node_modules
 
 # testing
 /coverage
-
+out
 # production
 build
 dist
