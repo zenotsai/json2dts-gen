@@ -32,8 +32,11 @@ js2dts -f ./package.json
 
 // or
 
-import generateDeclarationFile, { parseJson } from 'json2dts-gen';
- const res = generateDeclarationFile(parseJson(value), {
+import generateDeclaration  from 'json2dts-gen';
+const value = `{
+  "name": "vscode"
+}`
+ const res = generateDeclaration(value, {
           objectSeparate: true
           interfacePrefix: 'I' 
         }); 

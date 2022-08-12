@@ -20,6 +20,14 @@ function jsonFixer(value: string) {
   return undefined
 }
 
+function jsonFn(value: string) {
+  try {
+    return new Function(`return ${value}`)();
+  } catch (e) {
+    return null;
+  }
+
+}
 
 /**
  * TODO: 在 json-fixer 中拓展
@@ -39,21 +47,17 @@ function jsonFixerObject(value: string) {
       const newValue = `{${parts.join('')}}`
       return new Function(`return ${newValue}`)();
     } catch (e) {
-      console.error(e)
     }
   }
-  return undefined
+  return null
 }
 function looseParseJson(value: string): object {
-  let result;
-
-  try {
-    result = new Function(`return ${value}`)();
-  } catch (e) {
-    result = jsonFixer(value);
+  let result = jsonFn(value);
+  if (!result) {
+    result = jsonFixerObject(value);
   }
   if (!result) {
-    result = jsonFixerObject(value)
+    result = jsonFixer(value);
   }
   return result;
 }
@@ -69,8 +73,12 @@ export function parseJson(value: string) {
 
 
 
-function generateDeclarationFile(value: object, options: IOptions = Object.create(null)): string[] {
+function generateDeclarationTypeScript(json: string, options: IOptions = Object.create(null)): string[] {
   const { objectSeparate = true, interfacePrefix = '' } = options;
+  const value = parseJson(json);
+  if (!value) {
+    throw new Error('json2dts: conversion failure');
+  }
   const intf = dtsDom.create.interface(generateInterfaceName("CustomType"));
   const standaloneType: InterfaceDeclaration[] = [];
   const result: string[] = [];
@@ -153,4 +161,4 @@ function getObjectKeys(value: object) {
   return names;
 }
 
-export default generateDeclarationFile;
+export default generateDeclarationTypeScript;

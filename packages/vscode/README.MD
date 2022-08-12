@@ -4,12 +4,14 @@ Generate TypeScript type definitions from JSON
 
 # Feature
 *  JSON to typescript
-*  Loose JSON and support for auto-correction
+*  JSON auto correction
 *  Automatic I prefix addition, multi-level object support
 
 
 # Usage
+1, You can use ***CMD + Alt + V*** or ***CTRL + Alt +V*** to convert JSON from the clipboard to the TypeScript interface.
 
+2, Open panel
 Mac: **command+shift+p**
 Windows: **Ctrl + Shift + P**
 

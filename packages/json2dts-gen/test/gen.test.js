@@ -1,17 +1,17 @@
-import generateDeclaration, { parseJson } from "../dist/index.js";
+import generateDeclaration from "../dist/index.js";
 describe("dts-gen", () => {
   it("Simple Object", () => {
     expect(
-      generateDeclaration(parseJson(`{
+      generateDeclaration(`{
         name: "jordan"
-      }`))[0]
+      }`)[0]
     ).toEqual('interface CustomType {\r\n    name: string;\r\n}\r\n\r\n')
   })
 
 
   it("Array", () => {
     expect(
-      generateDeclaration(parseJson(`[
+      generateDeclaration((`[
         "aaa"
       ]`))[0]
     ).toEqual('type CustomType = string[]\r\n\r\n')
@@ -19,7 +19,7 @@ describe("dts-gen", () => {
 
   it("Array Object", () => {
     expect(
-      generateDeclaration(parseJson(`[
+      generateDeclaration((`[
         {
           "age": 123,
           "name": "jordan"
@@ -30,7 +30,7 @@ describe("dts-gen", () => {
 
   it("Nested Object", () => {
     expect(
-      generateDeclaration(parseJson(`{
+      generateDeclaration((`{
         name: "jordan",
         info: {
           age: 123,

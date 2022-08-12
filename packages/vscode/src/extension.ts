@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { resolve } from 'pathe'
 
+import generateDeclaration from "json2dts-gen";
 
 function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
 	return {
@@ -138,6 +139,31 @@ export function activate(context: vscode.ExtensionContext) {
 			Json2DtsWebViewPanel.createOrShow(context.extensionUri);
 		})
 	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('json2dts.convert', async (editBuilder) => {
+			const textEditor = vscode.window.activeTextEditor;
+			if (!textEditor) {
+				return;  // No open text editor
+			}
+			var selection = textEditor.selection;
+			try {
+				let clipboardContent = await vscode.env.clipboard.readText();
+				textEditor.edit(function (editBuilder) {
+					const res = generateDeclaration(clipboardContent.toString());
+					console.log(res);
+					// @ts-ignore
+					editBuilder.replace(selection, res.join('\n'));
+				});
+			} catch (e) {
+				// @ts-ignore
+				vscode.window.showErrorMessage(e.message);
+			}
+
+		})
+	);
+
+
 
 
 }

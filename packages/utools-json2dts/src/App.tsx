@@ -32,7 +32,7 @@ function App() {
     (value: string) => {
       try {
         setJson(value);
-        const res = generateDeclarationFile(parseJson(value), {
+        const res = generateDeclarationFile(value, {
           ...option,
           interfacePrefix: option.interfacePrefix ? 'I' : ''
         }); 
@@ -63,7 +63,7 @@ function App() {
       <div className='panel'>
         <Toolbar options={[
           {
-            label: '格式化',
+            label: 'format',
             key: 'format',
             className: 'formatIcon',
             onClick: () => {
@@ -71,7 +71,7 @@ function App() {
             }
           },
           {
-            label: '清除',
+            label: 'clear',
             className: 'clearIcon',
             key: 'clear',
             onClick: () => {
@@ -90,7 +90,7 @@ function App() {
       <Toolbar
         options={[
           {
-            label: '格式化时 interface 添加一个 "I" 前缀',
+            label: 'Add an "I" prefix to the interface when formatting',
             key: 'autoPrefix',
             component: <PrefixSwitch localKey={LOCAL_KEY_INTERFACE_PREFIX} active={option.interfacePrefix} onChange={(active) => {
               setOption({
@@ -102,7 +102,7 @@ function App() {
             </PrefixSwitch>
           },
           {
-            label: 'Object 单独生成一个 interface',
+            label: 'Object generates a separate interface',
             key: 'separate',
             component: <PrefixSwitch localKey={LOCAL_KEY_SEPARATE_PREFIX} active={option.objectSeparate} onChange={(active) => {
               setOption({

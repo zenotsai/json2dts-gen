@@ -4,6 +4,7 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const pathe_1 = require("pathe");
+const json2dts_gen_1 = require("json2dts-gen");
 function getWebviewOptions(extensionUri) {
     return {
         // Enable javascript in the webview
@@ -109,6 +110,26 @@ Json2DtsWebViewPanel.viewType = 'json2dts.view';
 function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('json2dts.open', () => {
         Json2DtsWebViewPanel.createOrShow(context.extensionUri);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('json2dts.convert', async (editBuilder) => {
+        const textEditor = vscode.window.activeTextEditor;
+        if (!textEditor) {
+            return; // No open text editor
+        }
+        var selection = textEditor.selection;
+        try {
+            let clipboardContent = await vscode.env.clipboard.readText();
+            textEditor.edit(function (editBuilder) {
+                const res = (0, json2dts_gen_1.default)(clipboardContent.toString());
+                console.log(res);
+                // @ts-ignore
+                editBuilder.replace(selection, res.join('\n'));
+            });
+        }
+        catch (e) {
+            // @ts-ignore
+            vscode.window.showErrorMessage(e.message);
+        }
     }));
 }
 exports.activate = activate;
