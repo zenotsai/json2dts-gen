@@ -2,7 +2,6 @@
 
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as path from 'path';
 import { resolve } from 'pathe'
 
 import generateDeclaration from "json2dts-gen";
@@ -12,7 +11,7 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
 		// Enable javascript in the webview
 		enableScripts: true,
 		// And restrict the webview to only loading content from our extension's `media` directory.
-		localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'build')]
+		localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'static')]
 	};
 }
 class Json2DtsWebViewPanel {
@@ -57,7 +56,7 @@ class Json2DtsWebViewPanel {
 	}
 
 	private _getAssetsUri(webview: vscode.Webview, filePath: string) {
-		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'build', filePath);
+		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'static', filePath);
 		const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
 		const stylesResetUri = webview.asWebviewUri(scriptUri);
 		return stylesResetUri;
@@ -65,10 +64,10 @@ class Json2DtsWebViewPanel {
 
 	private __handlerPublicPath(webview: vscode.Webview) {
 		try {
-			const files = fs.readdirSync(resolve(this._extensionUri.path, 'build/static/js')).map((i) => {
-				return resolve(vscode.Uri.joinPath(this._extensionUri, 'build/static/js').path, i);
+			const files = fs.readdirSync(resolve(this._extensionUri.path, 'static/static/js')).map((i) => {
+				return resolve(vscode.Uri.joinPath(this._extensionUri, 'static/static/js').path, i);
 			});
-			const publicPath = `https://file+.vscode-resource.vscode-cdn.net${vscode.Uri.joinPath(this._extensionUri, 'build').path}`;
+			const publicPath = `https://file+.vscode-resource.vscode-cdn.net${vscode.Uri.joinPath(this._extensionUri, 'static').path}`;
 			for (let i = 0; i < files.length; i++) {
 				let bundle = fs.readFileSync(files[i], 'utf-8');
 				if (bundle.startsWith('//done')) {
@@ -84,7 +83,7 @@ class Json2DtsWebViewPanel {
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
 		this.__handlerPublicPath(webview);
-		const jsonPath = resolve(this._extensionUri.path, 'build', 'asset-manifest.json');
+		const jsonPath = resolve(this._extensionUri.path, 'static', 'asset-manifest.json');
 		const obj = JSON.parse(fs.readFileSync(jsonPath).toString());
 		const mainJSUri = this._getAssetsUri(webview, obj.entrypoints[1]);
 		const mainCSSUri = this._getAssetsUri(webview, obj.entrypoints[0]);

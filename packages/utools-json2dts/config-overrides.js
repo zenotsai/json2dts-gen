@@ -3,6 +3,7 @@ const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 module.exports = {
   webpack: function (config, env) {
+    const vscodeRuntime = process.argv[2] === 'RUNTIME=VSCODE'
     config.plugins.push(
       new MonacoWebpackPlugin({
         languages: ["javascript", "typescript"],
@@ -11,7 +12,7 @@ module.exports = {
     if (env !== "production") {
       return config;
     }
-    config.output.publicPath = process.env.RUNTIME === 'VSCODE' ? "https://file+.vscode-resource.vscode-cdn.net/" : './';
+    config.output.publicPath = vscodeRuntime ? "https://file+.vscode-resource.vscode-cdn.net/" : './';
     return config;
   },
   devServer: function (configFunction) {

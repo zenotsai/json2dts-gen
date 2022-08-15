@@ -29,6 +29,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "build:vs": "react-app-rewired build RUNTIME=VSCODE",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
