@@ -14,6 +14,7 @@ program
   .option('-sep, --objectSeparate', 'Object types are defined individually', true)
   .option('-prefix, --prefix <prefix>', 'interface prefix')
   .option('-f, --file <file>', 'json file')
+  .option('-camelcase, --camelcase', 'property camelcase', false)
   .version(PkgJson.version)
   .parse();
 
@@ -35,9 +36,10 @@ const options = program.opts<{
   file: string;
   objectSeparate: boolean;
   prefix: string;
+  camelcase?: boolean;
 }>();
 (() => {
-  const { content, file, objectSeparate, prefix } = options;
+  const { content, file, objectSeparate, camelcase, prefix } = options;
   if (!content && !file) {
     log.warn('Missing required parameter --content or --file')
     return;
@@ -47,17 +49,18 @@ const options = program.opts<{
   if (content) {
     targetObj = parseJson(content);
   } else {
-    
+
     const filePath = path.resolve(process.cwd(), file);
     if (!isExistSync(filePath)) {
       log.warn(`file does not exist：${filePath}`)
       return;
     }
-    targetObj = parseJson(fs.readFileSync(filePath, { encoding: 'utf-8' }));
+    targetObj = fs.readFileSync(filePath, { encoding: 'utf-8' });
   }
 
   console.log(generateDeclarationFile(targetObj, {
     objectSeparate,
+    propertyKeyCamelcase: camelcase,
     interfacePrefix: prefix
-  }).join(''))
+  }))
 })()

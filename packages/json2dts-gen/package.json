@@ -1,9 +1,10 @@
 {
   "name": "json2dts-gen",
-  "version": "1.1.7",
+  "version": "1.1.9",
   "description": "generate dts from json",
   "main": "./dist/index.js",
   "license": "MIT",
+  "types": "./dist/index.d.ts",
   "keywords": [
     "json2ts",
     "js2ts",

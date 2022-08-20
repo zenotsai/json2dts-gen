@@ -1,6 +1,5 @@
 import type { ObjectType, InterfaceDeclaration, ArrayTypeReference, PrimitiveType } from './dts-dom';
 import * as dtsDom from './dts-dom';
-// @ts-ignore
 import jsonFixerBrowser from 'json-fixer-browser';
 import camelcase from 'camelcase';
 
@@ -8,6 +7,7 @@ import camelcase from 'camelcase';
 export type IOptions = {
   objectSeparate?: boolean;
   interfacePrefix?: string;
+  propertyKeyCamelcase?: boolean;
 }
 
 function jsonFixer(value: string) {
@@ -73,8 +73,8 @@ export function parseJson(value: string) {
 
 
 
-function generateDeclarationTypeScript(json: string, options: IOptions = Object.create(null)): string[] {
-  const { objectSeparate = true, interfacePrefix = '' } = options;
+function generateDeclarationTypeScript(json: string, options: IOptions = Object.create(null)): string {
+  const { objectSeparate = true, interfacePrefix = '', propertyKeyCamelcase } = options;
   const value = parseJson(json);
   if (!value) {
     throw new Error('json2dts: conversion failure');
@@ -105,7 +105,7 @@ function generateDeclarationTypeScript(json: string, options: IOptions = Object.
         }
         const keys = getObjectKeys(value);
         const members = keys.map((key: string) => {
-          return dtsDom.create.property(key, getTypeOfValue(value[key], key));
+          return dtsDom.create.property(propertyKeyCamelcase ? camelcase(key) : key, getTypeOfValue(value[key], key));
         });
         if (!propertyKey) {
           const objType = dtsDom.create.objectType(members);
@@ -148,7 +148,7 @@ function generateDeclarationTypeScript(json: string, options: IOptions = Object.
   } else {
     generateObjectDeclaration(value);
   }
-  return result;
+  return result.join('\n');
 }
 
 

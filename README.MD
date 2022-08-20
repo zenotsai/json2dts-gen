@@ -18,11 +18,6 @@ search for **JSON2DTS** install
 
 # Cli
 
-
-
-
-## Usage
-
 ```js
 // install
 npm i json2dts-gen
@@ -49,7 +44,8 @@ const value = `{
 | -c | json content | -- |
 | -f |  file path | -- |
 | -sep |  Object types are defined individually | true |
-| -prefix |  ixinterface prefix | -- |
+| -prefix |  interface prefix | -- |
+| -camelcase |  property camelcase | -- |
 
 
 
@@ -59,8 +55,6 @@ const value = `{
 
 # UTools
 search for **Json2Ts** install
-
-![image](https://raw.githubusercontent.com/zenotsai/image-hosting/master/frontend/截屏2022-04-19-下午2.3wl5x8b292a0.webp)
 
 ## Test
 

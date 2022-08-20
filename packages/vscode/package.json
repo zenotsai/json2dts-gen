@@ -2,7 +2,7 @@
   "name": "JSON2dts",
   "displayName": "JSON2dts",
   "description": "JSON to typescript",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "bugs": {
     "url": "https://github.com/zenotsai/json2dts-gen/issues"
   },
@@ -33,7 +33,8 @@
   "private": true,
   "activationEvents": [
     "onCommand:json2dts.open",
-    "onCommand:json2dts.convert"
+    "onCommand:json2dts.convertFromClipboard",
+    "onCommand:json2dts.convertFromSelected"
   ],
   "main": "./dist/extension.js",
   "capabilities": {
@@ -42,22 +43,67 @@
     }
   },
   "contributes": {
+
+    "configuration": {
+      "title": "JSON2dts",
+      "properties": {
+        "JSON2dts.interfacePrefix": {
+          "type": "boolean",
+          "default": true,
+          "description": "Add an 'I' prefix to the interface when formatting"
+        },
+        "JSON2dts.objectSeparate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Object generates a separate interface"
+        },
+        "JSON2dts.propertyKeyCamelcase": {
+          "type": "boolean",
+          "default": false,
+          "description": "Formatting Object Properties to Camelcase"
+        }
+      }
+    },
+
+    "menus": {
+      "editor/context": [
+        {
+          "command": "json2dts.convertFromSelected",
+          "alt": "json2dts.convertFromSelected",
+          "group": "navigation"
+        },
+        {
+          "command": "json2dts.convertFromClipboard",
+          "alt": "json2dts.convertFromClipboard",
+          "group": "navigation"
+        }
+      ]
+    },
     "keybindings": [
       {
-        "command": "json2dts.convert",
+        "command": "json2dts.convertFromClipboard",
         "key": "ctrl+alt+V"
+      },
+      {
+        "command": "json2dts.convertFromSelected",
+        "key": "ctrl+alt+S"
       }
     ],
     "commands": [
       {
+        "command": "json2dts.convertFromSelected",
+        "title": "2dts From Selected",
+        "category": "Convert from selected text"
+      },
+      {
+        "command": "json2dts.convertFromClipboard",
+        "title": "2dts From Clipboard",
+        "category": "Convert from clipboard"
+      },
+      {
         "command": "json2dts.open",
         "title": "2dts",
         "category": "Open JSON2TS panel"
-      },
-      {
-        "command": "json2dts.convert",
-        "title": "json convert",
-        "category": "keybindings"
       }
     ]
   },
@@ -84,7 +130,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "json2dts-gen": "workspace:1.1.7",
+    "json2dts-gen": "workspace:1.1.9",
     "pathe": "^0.3.3",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"

@@ -64,7 +64,7 @@ importers:
       classnames: ^2.3.1
       clipboard: ^2.0.10
       cross-env: ^7.0.3
-      json2dts-gen: workspace:1.1.7
+      json2dts-gen: workspace:1.1.9
       lodash-es: ^4.17.21
       monaco-editor: ^0.33.0
       monaco-editor-webpack-plugin: ^7.0.1
@@ -114,7 +114,7 @@ importers:
       '@vscode/test-electron': ^2.1.5
       eslint: ^8.20.0
       glob: ^8.0.3
-      json2dts-gen: workspace:1.1.7
+      json2dts-gen: workspace:1.1.9
       mocha: ^10.0.0
       pathe: ^0.3.3
       ts-loader: ^9.3.1

@@ -1,6 +1,6 @@
 import './App.css';
 import generateDeclarationFile, { parseJson } from 'json2dts-gen';
-import { useMemo, useState }  from 'react'
+import {  useState }  from 'react'
 import ClipboardButton from './ClipboardButton';
 import useDebounceFn  from './useDebounceFn';
 import Toolbar from './toolbar'
@@ -21,7 +21,7 @@ function getDefaultValue (key: string, defaultValue: boolean) {
   return value === '1';
 }
 function App() {
-  const [result, setResult] = useState<string[]>([]);
+  const [result, setResult] = useState<string>('');
   const [json, setJson] = useState<string>();
   const [option, setOption] = useState({
     interfacePrefix: getDefaultValue(LOCAL_KEY_INTERFACE_PREFIX, false),
@@ -36,9 +36,9 @@ function App() {
           ...option,
           interfacePrefix: option.interfacePrefix ? 'I' : ''
         }); 
-        setResult(res || [])
+        setResult(res)
       } catch (e: any) {
-        setResult([e.message])
+        setResult(e.message)
       }
     },
     {
@@ -55,9 +55,6 @@ function App() {
 
 
  
-  const resultMsg = useMemo(() => {
-    return (result || []).join('')
-  }, [result])
   return (
     <div className="App">
       <div className='panel'>
@@ -86,7 +83,7 @@ function App() {
        
       </div>
       <div className='panel'>
-      <ClipboardButton text={resultMsg} className="copyBtn"/>
+      <ClipboardButton text={result} className="copyBtn"/>
       <Toolbar
         options={[
           {
@@ -116,7 +113,7 @@ function App() {
         ]}
       />
       <Editor
-          value={resultMsg}
+          value={result}
           language="typescript"
           options={{
             readOnly: true,
