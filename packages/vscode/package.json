@@ -2,7 +2,7 @@
   "name": "JSON2dts",
   "displayName": "JSON2dts",
   "description": "JSON to typescript",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "bugs": {
     "url": "https://github.com/zenotsai/json2dts-gen/issues"
   },
@@ -70,12 +70,14 @@
         {
           "command": "json2dts.convertFromSelected",
           "alt": "json2dts.convertFromSelected",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "resourceExtname =~ /.ts|tsx|vue|md$/i"
         },
         {
           "command": "json2dts.convertFromClipboard",
           "alt": "json2dts.convertFromClipboard",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "resourceExtname =~ /.ts|tsx|vue|md$/i"
         }
       ]
     },
