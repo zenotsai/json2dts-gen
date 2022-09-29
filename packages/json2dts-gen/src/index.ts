@@ -132,19 +132,19 @@ function generateDeclarationTypeScript(json: string, options: IOptions = Object.
     const obj = getTypeOfValue(value) as InterfaceDeclaration;
     obj.members.forEach((m) => intf.members.push(m));
     standaloneType.forEach((e) =>
-      result.push(handlerResult(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module })))
+      result.push(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module }))
     );
-    result.push(handlerResult(dtsDom.emit(intf, { rootFlags: dtsDom.ContextFlags.Module })))
+    result.push(dtsDom.emit(intf, { rootFlags: dtsDom.ContextFlags.Module }))
     return obj;
   }
 
   if (Array.isArray(value) && value.length > 0) {
     const obj = getTypeOfValue(value[0]) as InterfaceDeclaration;
     standaloneType.forEach((e) =>
-      result.push(handlerResult(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module })))
+      result.push(dtsDom.emit(e, { rootFlags: dtsDom.ContextFlags.Module }))
     );
     const customType = dtsDom.create.type(generateInterfaceName("CustomType"), dtsDom.create.array(obj));
-    result.push(handlerResult(dtsDom.emit(customType, { rootFlags: dtsDom.ContextFlags.Module })))
+    result.push(dtsDom.emit(customType, { rootFlags: dtsDom.ContextFlags.Module }))
   } else {
     generateObjectDeclaration(value);
   }
@@ -153,9 +153,7 @@ function generateDeclarationTypeScript(json: string, options: IOptions = Object.
 
 
 
-function handlerResult(res: string) {
-  return res.replace(/\((.+)\)\[\]/g, "$1")
-}
+
 function getObjectKeys(value: object) {
   const names = Object.getOwnPropertyNames(value);
   return names;

@@ -1,6 +1,6 @@
 {
   "name": "json2dts-gen",
-  "version": "1.1.9",
+  "version": "1.1.11",
   "description": "generate dts from json",
   "main": "./dist/index.js",
   "license": "MIT",
@@ -24,6 +24,7 @@
     "preinstall": "npx only-allow pnpm",
     "build": "tsup",
     "test": "jest",
+    "prepublishOnly": "npm run build",
     "dev": "tsup --watch src"
   },
   "author": "zeno",

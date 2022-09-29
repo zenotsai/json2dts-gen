@@ -23,23 +23,20 @@ if (fs.existsSync(staticBuildDir)) {
   console.log('clean...')
   clean(staticBuildDir);
 }
-
-
 console.log('build static files...')
 exec(`pnpm run build:vs`, {
   cwd: staticProjectDir
 }, (err, stdout, stderr ) => {
-  if (stderr) {
-    console.log(stderr)
-    return;
+  if (!err) {
+    fs.renameSync(path.resolve(staticProjectDir, 'build'),staticBuildDir,function(err){
+      if(err){
+         console.log(err) 
+      } else {
+        console.log('copied')
+      }
+    })
   }
-  console.log(stdout);
- 
-  fs.rename(path.resolve(staticProjectDir, 'build'),staticBuildDir,function(err){
-    if(err){
-       console.log(err) 
-    }
-  })
+
 
 })
 

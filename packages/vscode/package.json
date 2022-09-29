@@ -2,7 +2,7 @@
   "name": "JSON2dts",
   "displayName": "JSON2dts",
   "description": "JSON to typescript",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "bugs": {
     "url": "https://github.com/zenotsai/json2dts-gen/issues"
   },
@@ -43,7 +43,6 @@
     }
   },
   "contributes": {
-
     "configuration": {
       "title": "JSON2dts",
       "properties": {
@@ -64,7 +63,6 @@
         }
       }
     },
-
     "menus": {
       "editor/context": [
         {
@@ -132,7 +130,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "json2dts-gen": "workspace:1.1.9",
+    "json2dts-gen": "workspace:1.1.11",
     "pathe": "^0.3.3",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
